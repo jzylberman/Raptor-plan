@@ -3,256 +3,226 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Operation Raptor 🛻 · Two Cars → One Truck</title>
-<meta name="description" content="Sell the Tacoma and GTI, buy a Ranger Raptor: private sale vs trade-in math with Connecticut tax.">
-<meta property="og:title" content="Operation Raptor 🛻">
-<meta property="og:description" content="Two cars in, one Raptor out. Here's the math.">
+<title>The Garage Plan · Two Cars, One Truck</title>
+<meta name="description" content="Selling the Tacoma and GTI for a Ranger Raptor: private sale vs. trade-in, with Connecticut tax and fees.">
+<meta property="og:title" content="The Garage Plan">
+<meta property="og:description" content="Two cars, one truck. The numbers, side by side.">
 <meta property="og:image" content="photos/raptor.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    color-scheme: dark;
-    --bg:#0b0c10; --surface:#14161b; --surface-2:#1c1f26; --line:#2a2e37;
-    --text:#f4f2ee; --text-2:#c6c4bb; --muted:#8e8c85;
-    --blue:#3d8bff; --orange:#ff6a1f; --good:#2fd17f; --gold:#ffc23d;
-    --radius:20px;
-    --display:"Archivo Black", Impact, "Arial Black", system-ui, sans-serif;
-    --font:"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color-scheme: light;
+    --bg:#f7f4ef; --paper:#fffdf9; --tint:#f1ece4; --line:#e4ddd2; --line-2:#d6cdbf;
+    --ink:#1f2a37; --ink-2:#4b5563; --muted:#8a8378;
+    --navy:#2c4563; --navy-soft:#a9b8cb; --gold:#a8854a; --gold-soft:#efe4cf;
+    --sage:#4f7a63; --sage-soft:#e3ece5; --clay:#b4683f;
+    --radius:18px;
+    --serif:"Cormorant Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
+    --sans:"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --shadow:0 1px 2px rgba(31,42,55,.04), 0 8px 24px rgba(31,42,55,.06);
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-    background:
-      radial-gradient(600px 400px at 90% 0%, rgba(255,106,31,.18), transparent 70%),
-      radial-gradient(600px 400px at 0% 40%, rgba(61,139,255,.14), transparent 70%);}
-  .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 18px 70px}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 22px 80px}
   .num{font-variant-numeric:tabular-nums}
 
-  /* TICKER */
-  .ticker{position:relative;z-index:2;overflow:hidden;background:repeating-linear-gradient(-45deg,var(--orange) 0 18px,#e55510 18px 36px);color:#111;font-family:var(--display);font-size:13px;letter-spacing:.08em;white-space:nowrap}
-  .ticker .track{display:inline-block;padding:8px 0;animation:scroll 28s linear infinite}
-  .ticker span{margin:0 22px}
-  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  /* MASTHEAD */
+  .mast{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid var(--line);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .mast b{color:var(--ink);font-weight:600}
 
   /* HERO */
-  .hero{position:relative;margin-top:22px;border-radius:28px;overflow:hidden;border:1px solid var(--line);
-    background:#0e1014;min-height:420px;display:grid;grid-template-columns:1.05fr 1fr}
-  .hero-copy{position:relative;z-index:2;padding:38px 30px 30px}
-  .hero-photo{position:relative;min-height:260px}
-  .hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kenburns 18s ease-in-out infinite alternate}
-  .hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0e1014 0%,rgba(14,16,20,.35) 35%,rgba(14,16,20,0) 70%)}
-  @keyframes kenburns{from{transform:scale(1.02)}to{transform:scale(1.12) translateX(-2%)}}
-  .eyebrow{display:inline-flex;gap:8px;align-items:center;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:800;
-    background:rgba(255,194,61,.1);border:1px solid rgba(255,194,61,.35);padding:5px 11px;border-radius:999px}
-  h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,7vw,76px);line-height:.92;margin:16px 0 14px;letter-spacing:-.01em;text-transform:uppercase}
-  h1 .grad{background:linear-gradient(90deg,var(--orange),var(--gold) 60%,var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:shine 4s linear infinite}
-  @keyframes shine{to{background-position:200% 0}}
-  .lede{color:var(--text-2);margin:0;font-size:16px;max-width:460px}
-  .equation{display:flex;align-items:center;gap:10px;margin-top:20px;flex-wrap:wrap}
-  .pill{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:12px;font-weight:700;font-size:14px;background:var(--surface-2);border:1px solid var(--line)}
-  .pill.t{border-color:rgba(61,139,255,.6);box-shadow:0 0 18px rgba(61,139,255,.25)}
-  .pill.g{border-color:rgba(255,255,255,.4)}
-  .pill.r{border-color:rgba(255,106,31,.7);box-shadow:0 0 22px rgba(255,106,31,.35);background:rgba(255,106,31,.12)}
-  .op{font-family:var(--display);color:var(--muted);font-size:20px}
+  .hero{display:grid;grid-template-columns:1fr 1.1fr;gap:44px;align-items:center;padding:52px 0 36px}
+  .kicker{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  h1{font-family:var(--serif);font-weight:500;font-size:clamp(44px,6.4vw,74px);line-height:1;margin:14px 0 18px;letter-spacing:-.01em}
+  h1 em{font-style:italic;color:var(--navy)}
+  .lede{font-size:17px;color:var(--ink-2);margin:0;max-width:440px}
+  .equation{display:flex;align-items:center;gap:12px;margin-top:26px;font-family:var(--serif);font-size:22px;color:var(--ink-2)}
+  .equation .op{color:var(--gold)}
+  .equation .end{color:var(--ink);font-weight:600}
+  .hero-photo{position:relative;border-radius:22px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:16/10}
+  .hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero-photo figcaption{position:absolute;left:16px;bottom:14px;background:rgba(255,253,249,.92);backdrop-filter:blur(6px);padding:7px 12px;border-radius:999px;font-size:12px;color:var(--ink);letter-spacing:.04em}
 
   /* KPIs */
-  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
-  .kpi{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px;overflow:hidden;transition:transform .2s}
-  .kpi:hover{transform:translateY(-3px)}
-  .kpi .emoji{position:absolute;right:12px;top:10px;font-size:26px;opacity:.9}
-  .kpi .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:700}
-  .kpi .value{font-family:var(--display);font-size:30px;margin-top:4px;line-height:1.05}
-  .kpi .sub{font-size:13px;color:var(--text-2);margin-top:4px}
-  .kpi.win{background:linear-gradient(160deg,rgba(47,209,127,.18),rgba(47,209,127,.04));border-color:rgba(47,209,127,.5)}
-  .kpi.win .value{color:var(--good);font-size:24px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .kpi{padding:22px 24px;border-left:1px solid var(--line)}
+  .kpi:first-child{border-left:0}
+  .kpi .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.16em;font-weight:600}
+  .kpi .value{font-family:var(--serif);font-size:38px;font-weight:600;line-height:1.1;margin-top:6px;color:var(--ink)}
+  .kpi .sub{font-size:13px;color:var(--ink-2);margin-top:2px}
+  .kpi.win .value{color:var(--sage);font-size:28px;line-height:1.15;margin-top:10px}
 
-  /* GAUGE */
-  .gauge{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:20px 22px 22px}
-  .gauge-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
-  .gauge-head h3{margin:0;font-family:var(--display);font-weight:400;font-size:20px;text-transform:uppercase;letter-spacing:.02em}
-  .gauge-head p{margin:0;color:var(--text-2);font-size:14px}
-  .road{position:relative;height:64px;margin-top:16px;border-radius:14px;background:#22252c;overflow:hidden;box-shadow:inset 0 2px 8px rgba(0,0,0,.5)}
-  .road::before{content:"";position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;background:repeating-linear-gradient(90deg,#f4d35e 0 26px,transparent 26px 52px);opacity:.7;animation:lanes 1.2s linear infinite}
-  @keyframes lanes{to{background-position:52px 0}}
-  .road .paid{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(47,209,127,.12),rgba(47,209,127,.35));border-right:2px solid var(--good);transition:width 1s cubic-bezier(.2,.8,.2,1)}
-  .road .truck{position:absolute;top:50%;font-size:38px;transform:translate(-80%,-55%) scaleX(-1);transition:left 1s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
-  .road .flag{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:30px}
-  .road-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:13px;color:var(--muted)}
-  .road-labels b{color:var(--text)}
+  /* PROGRESS */
+  .progress{margin-top:18px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow)}
+  .progress-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .progress-head h3{margin:0;font-family:var(--serif);font-weight:600;font-size:24px}
+  .progress-head p{margin:0;color:var(--ink-2);font-size:14px}
+  .bar-outer{position:relative;height:12px;border-radius:999px;background:var(--tint);margin-top:20px;overflow:visible}
+  .bar-inner{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,var(--navy),#4a6a8f);transition:width .9s cubic-bezier(.2,.8,.2,1)}
+  .bar-dot{position:absolute;top:50%;width:22px;height:22px;border-radius:50%;background:var(--paper);border:3px solid var(--navy);transform:translate(-50%,-50%);transition:left .9s cubic-bezier(.2,.8,.2,1);box-shadow:0 2px 6px rgba(31,42,55,.15)}
+  .bar-labels{display:flex;justify-content:space-between;margin-top:12px;font-size:13px;color:var(--muted)}
+  .bar-labels b{color:var(--ink);font-weight:600}
 
-  h2{font-family:var(--display);font-weight:400;font-size:clamp(26px,4vw,36px);margin:50px 0 6px;text-transform:uppercase;letter-spacing:.01em}
-  h2 .e{font-family:var(--font)}
-  .section-sub{color:var(--text-2);margin:0 0 18px;font-size:15px}
+  h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,4.4vw,44px);margin:64px 0 6px;letter-spacing:-.005em}
+  .section-sub{color:var(--ink-2);margin:0 0 22px;font-size:15px;max-width:620px}
+  .rule{display:flex;align-items:center;gap:14px;color:var(--gold);font-size:12px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;margin-top:64px}
+  .rule::after{content:"";flex:1;height:1px;background:var(--line)}
+  .rule + h2{margin-top:10px}
 
   /* GARAGE */
-  .garage{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .car{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:transform .25s, box-shadow .25s, border-color .25s}
-  .car:hover{transform:translateY(-6px) rotate(-.4deg);box-shadow:0 18px 40px rgba(0,0,0,.45)}
-  .car.tacoma:hover{border-color:rgba(61,139,255,.7)}
-  .car.gti:hover{border-color:rgba(255,255,255,.55)}
-  .car.raptor{border-color:rgba(255,106,31,.55);box-shadow:0 0 0 1px rgba(255,106,31,.2),0 0 40px rgba(255,106,31,.12)}
-  .car .pic{position:relative;aspect-ratio:16/9;overflow:hidden;background:#1a1d22}
-  .car .pic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
-  .car:hover .pic img{transform:scale(1.06)}
-  .car .pic::after{content:"";position:absolute;inset:auto 0 0 0;height:45%;background:linear-gradient(0deg,rgba(20,22,27,.9),transparent)}
-  .stamp{position:absolute;z-index:2;top:12px;left:12px;font-family:var(--display);font-size:12px;letter-spacing:.08em;padding:6px 10px;border-radius:8px;transform:rotate(-4deg)}
-  .stamp.sell{background:var(--blue);color:#fff}
-  .stamp.buy{background:var(--orange);color:#111;animation:pulse 1.8s ease-in-out infinite}
-  @keyframes pulse{50%{box-shadow:0 0 0 8px rgba(255,106,31,0)}0%,100%{box-shadow:0 0 0 0 rgba(255,106,31,.6)}}
-  .car .title{position:absolute;z-index:2;left:16px;bottom:10px;right:16px}
-  .car .title h3{margin:0;font-family:var(--display);font-weight:400;font-size:20px;text-transform:uppercase;line-height:1.05;text-shadow:0 2px 10px rgba(0,0,0,.7)}
-  .car .title .meta{font-size:12px;color:#e2e0d8;text-shadow:0 1px 6px rgba(0,0,0,.8)}
-  .car .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px;flex:1}
-  .chips{display:flex;flex-wrap:wrap;gap:6px}
-  .chip{font-size:12px;color:var(--text-2);background:var(--surface-2);border:1px solid var(--line);padding:3px 9px;border-radius:999px}
+  .garage{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .car{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .3s, box-shadow .3s}
+  .car:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(31,42,55,.05),0 16px 36px rgba(31,42,55,.10)}
+  .car .pic{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--tint)}
+  .car .pic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+  .car:hover .pic img{transform:scale(1.035)}
+  .status{position:absolute;top:14px;left:14px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:6px 11px;border-radius:999px;background:rgba(255,253,249,.94);color:var(--ink)}
+  .status.buy{background:var(--ink);color:#fff}
+  .car .body{padding:20px 20px 22px;display:flex;flex-direction:column;gap:14px;flex:1}
+  .car h3{margin:0;font-family:var(--serif);font-weight:600;font-size:25px;line-height:1.1}
+  .car .meta{font-size:13px;color:var(--muted);margin-top:-8px}
+  .notes{margin:0;padding:0;list-style:none;font-size:13px;color:var(--ink-2);display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}
+  .notes li{position:relative;padding-left:12px}
+  .notes li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--gold)}
+  .divider{height:1px;background:var(--line);margin:2px 0}
 
-  .field{display:flex;flex-direction:column;gap:6px}
-  .field label{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;font-weight:600}
-  .field label b{color:var(--text);font-weight:800}
-  .money{display:flex;align-items:center;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:0 12px}
+  .field{display:flex;flex-direction:column;gap:7px}
+  .field label{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;letter-spacing:.02em}
+  .field label b{color:var(--ink);font-weight:600}
+  .money{display:flex;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:0 12px;transition:border-color .2s, box-shadow .2s}
   .money span{color:var(--muted)}
-  .money input{all:unset;flex:1;padding:9px 6px;font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text);width:100%}
-  .money:focus-within{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,106,31,.25)}
-  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--orange) var(--p,50%),#2b2f38 var(--p,50%));outline:none}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:4px solid var(--orange);box-shadow:0 2px 8px rgba(0,0,0,.4);cursor:grab}
-  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:4px solid var(--orange);cursor:grab}
+  .money input{all:unset;flex:1;padding:9px 6px;font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--ink);width:100%}
+  .money:focus-within{border-color:var(--navy);box-shadow:0 0 0 3px rgba(44,69,99,.12)}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:999px;background:linear-gradient(90deg,var(--navy) var(--p,50%),var(--line-2) var(--p,50%));outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--paper);border:2px solid var(--navy);box-shadow:0 1px 4px rgba(31,42,55,.2);cursor:grab}
+  input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--paper);border:2px solid var(--navy);cursor:grab}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .verdict{margin-top:auto;font-size:13px;padding:11px 12px;border-radius:12px;border:1px solid var(--line);color:var(--text-2);background:var(--surface-2)}
-  .verdict .call{display:inline-block;font-family:var(--display);font-size:13px;padding:2px 8px;border-radius:6px;margin-right:6px;color:#111}
-  .verdict .call.sell{background:var(--good)}
-  .verdict .call.trade{background:var(--gold)}
+  .verdict{margin-top:auto;font-size:13px;padding:12px 14px;border-radius:12px;background:var(--tint);color:var(--ink-2)}
+  .verdict .call{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:3px}
+  .verdict .call.sell{color:var(--sage)}
+  .verdict .call.trade{color:var(--gold)}
+  .verdict strong{color:var(--ink);font-weight:600}
 
   /* SCENARIOS */
-  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
-  .bars{display:flex;flex-direction:column;gap:14px}
-  .bar-row{display:grid;grid-template-columns:minmax(160px,240px) 1fr;gap:14px;align-items:center;cursor:default}
-  .bar-name{font-size:15px;font-weight:700}
-  .bar-name small{display:block;color:var(--muted);font-size:12px;font-weight:500}
-  .track{position:relative;height:40px;border-left:2px solid var(--line)}
-  .fill{position:absolute;left:0;top:4px;bottom:4px;border-radius:0 6px 6px 0;background:var(--blue);transition:width .6s cubic-bezier(.2,.8,.2,1)}
-  .bar-row.best .fill{background:repeating-linear-gradient(-45deg,var(--good) 0 12px,#27b86e 12px 24px);background-size:34px 34px;animation:stripes 1s linear infinite}
-  @keyframes stripes{to{background-position:34px 0}}
-  .bar-val{position:absolute;top:50%;transform:translateY(-50%);font-size:15px;font-weight:800;white-space:nowrap;padding-left:10px;transition:left .6s cubic-bezier(.2,.8,.2,1)}
-  .badge{display:inline-block;margin-left:8px;font-size:11px;font-weight:800;color:#111;background:var(--gold);padding:3px 8px;border-radius:999px;vertical-align:2px}
-  .bar-row:hover .fill{filter:brightness(1.18)}
-  .tip{position:fixed;pointer-events:none;z-index:20;background:#22252c;border:1px solid #3b404a;border-radius:12px;padding:11px 13px;font-size:13px;min-width:230px;box-shadow:0 12px 30px rgba(0,0,0,.5);opacity:0;transition:opacity .12s}
-  .tip .r{display:flex;justify-content:space-between;gap:16px;color:var(--text-2)}
-  .tip .r b{color:var(--text);font-variant-numeric:tabular-nums}
-  .tip .t{font-weight:800;margin-bottom:6px}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+  .bars{display:flex;flex-direction:column;gap:16px}
+  .bar-row{display:grid;grid-template-columns:minmax(170px,250px) 1fr;gap:16px;align-items:center;outline:none}
+  .bar-name{font-size:15px;font-weight:600}
+  .bar-name small{display:block;color:var(--muted);font-size:12px;font-weight:400}
+  .track{position:relative;height:30px;border-left:1px solid var(--line-2)}
+  .fill{position:absolute;left:0;top:5px;bottom:5px;border-radius:0 4px 4px 0;background:var(--navy-soft);transition:width .6s cubic-bezier(.2,.8,.2,1)}
+  .bar-row.best .fill{background:var(--sage)}
+  .bar-val{position:absolute;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;white-space:nowrap;padding-left:10px;transition:left .6s cubic-bezier(.2,.8,.2,1)}
+  .badge{display:inline-block;margin-left:8px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);background:var(--sage-soft);padding:3px 8px;border-radius:999px;vertical-align:2px}
+  .bar-row:hover .fill,.bar-row:focus .fill{filter:brightness(.93)}
+  .tip{position:fixed;pointer-events:none;z-index:20;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px;min-width:230px;box-shadow:0 12px 30px rgba(31,42,55,.14);opacity:0;transition:opacity .12s}
+  .tip .r{display:flex;justify-content:space-between;gap:16px;color:var(--ink-2)}
+  .tip .r b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600}
+  .tip .t{font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:6px}
 
-  .table-wrap{overflow-x:auto;margin-top:20px}
+  .table-wrap{overflow-x:auto;margin-top:24px}
   table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
-  th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th,td{padding:11px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
   th:first-child,td:first-child{text-align:left}
-  th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700}
-  tr.best td{background:rgba(47,209,127,.08)}
-  tr.best td:first-child{box-shadow:inset 4px 0 0 var(--good)}
-  td.strong{font-weight:800}
+  th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;font-weight:600}
+  tr.best td{background:var(--sage-soft)}
+  td.strong{font-weight:700}
 
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
-  .panel h3{margin:0 0 10px;font-family:var(--display);font-weight:400;font-size:18px;text-transform:uppercase}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+  .panel h3{margin:0 0 12px;font-family:var(--serif);font-weight:600;font-size:24px}
   .list{margin:0;padding:0;list-style:none}
-  .list li{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px;color:var(--text-2)}
-  .list li b{color:var(--text);font-variant-numeric:tabular-nums}
-  .list li.total{border-bottom:none;padding-top:14px;font-size:17px;color:var(--text)}
-  .why{display:grid;gap:12px}
-  .why .item{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--text-2)}
-  .why .ic{flex:none;width:38px;height:38px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;font-size:19px;transition:transform .2s}
-  .why .item:hover .ic{transform:rotate(-10deg) scale(1.1)}
-  .why strong{color:var(--text)}
+  .list li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+  .list li b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600}
+  .list li.total{border-bottom:none;padding-top:16px;font-size:16px;color:var(--ink)}
+  .list li.total b{font-family:var(--serif);font-size:28px;color:var(--sage)}
+  .why{display:grid;gap:16px}
+  .why .item{display:grid;grid-template-columns:34px 1fr;gap:12px;font-size:14px;color:var(--ink-2)}
+  .why .n{font-family:var(--serif);font-size:26px;line-height:1;color:var(--gold)}
+  .why strong{color:var(--ink);font-weight:600}
 
-  .cta{margin-top:26px;display:flex;justify-content:center}
-  .cta button{font-family:var(--display);font-size:16px;letter-spacing:.04em;text-transform:uppercase;color:#111;background:linear-gradient(90deg,var(--orange),var(--gold));border:0;border-radius:999px;padding:14px 26px;cursor:pointer;box-shadow:0 10px 30px rgba(255,106,31,.35);transition:transform .15s}
-  .cta button:hover{transform:translateY(-2px) scale(1.03)}
-  .cta button:active{transform:scale(.97)}
+  details{margin-top:28px;color:var(--ink-2);font-size:14px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 20px}
+  summary{cursor:pointer;color:var(--ink);font-weight:600}
+  footer{margin-top:40px;color:var(--muted);font-size:12px;text-align:center;letter-spacing:.06em}
 
-  details{margin-top:30px;color:var(--text-2);font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 18px}
-  summary{cursor:pointer;color:var(--text);font-weight:700}
-  footer{margin-top:30px;color:var(--muted);font-size:12px;text-align:center}
-  canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
-
-  @media (max-width:900px){
-    .hero{grid-template-columns:1fr}
-    .hero-photo{order:-1;min-height:220px}
-    .hero-photo::after{background:linear-gradient(0deg,#0e1014 0%,rgba(14,16,20,0) 60%)}
-    .hero-copy{padding:20px 20px 24px}
+  @media (max-width:920px){
+    .hero{grid-template-columns:1fr;gap:26px;padding-top:30px}
+    .hero-photo{order:-1}
     .kpis{grid-template-columns:1fr 1fr}
+    .kpi:nth-child(3){border-left:0}
+    .kpi:nth-child(n+3){border-top:1px solid var(--line)}
     .garage{grid-template-columns:1fr}
     .grid2{grid-template-columns:1fr}
   }
   @media (max-width:560px){
+    .wrap{padding:0 16px 60px}
     .bar-row{grid-template-columns:1fr;gap:4px}
-    .kpi .value{font-size:24px}
+    .kpi{padding:16px}
+    .kpi .value{font-size:30px}
+    .kpi.win .value{font-size:22px}
+    .mast span:last-child{display:none}
   }
   @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation:none!important;transition:none!important}
+    *,*::before,*::after{transition:none!important}
   }
 </style>
 </head>
 <body>
-<canvas id="confetti"></canvas>
-
-<div class="ticker" aria-hidden="true"><div class="track">
-  <span>🛻 2 cars in</span><span>1 Raptor out</span><span>🔧 half the maintenance</span><span>📄 one insurance bill</span><span>🏁 more fun per mile</span><span>💸 the math checks out</span>
-  <span>🛻 2 cars in</span><span>1 Raptor out</span><span>🔧 half the maintenance</span><span>📄 one insurance bill</span><span>🏁 more fun per mile</span><span>💸 the math checks out</span>
-</div></div>
-
 <div class="wrap">
+
+  <div class="mast"><span><b>The Garage Plan</b></span><span>Connecticut · November 2026</span></div>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-copy">
-      <span class="eyebrow">🦖 The garage plan</span>
-      <h1>Operation<br><span class="grad">Raptor</span></h1>
-      <p class="lede">We sell two cars and get one truck: one to maintain, one to insure, one CT car tax bill. Here's the math, including tax and fees.</p>
-      <div class="equation">
-        <span class="pill t">🔵 Tacoma</span><span class="op">+</span>
-        <span class="pill g">⚪ GTI</span><span class="op">=</span>
-        <span class="pill r">🔥 Raptor</span>
-      </div>
+    <div>
+      <div class="kicker">Two cars, one truck</div>
+      <h1>A simpler garage, <em>by the numbers.</em></h1>
+      <p class="lede">We'd sell the Tacoma and the GTI and replace both with a single Ranger Raptor: one vehicle to maintain, insure and pay car tax on. Here's what that costs, including Connecticut sales tax and fees.</p>
+      <div class="equation"><span>Tacoma</span><span class="op">+</span><span>GTI</span><span class="op">→</span><span class="end">Raptor</span></div>
     </div>
-    <div class="hero-photo"><img src="photos/raptor.jpg" alt="Ford Ranger Raptor in blue"></div>
+    <figure class="hero-photo" style="margin:0">
+      <img src="photos/raptor.jpg" alt="Ford Ranger Raptor in blue">
+      <figcaption>2025/26 Ford Ranger Raptor</figcaption>
+    </figure>
   </section>
 
   <div class="kpis">
-    <div class="kpi win"><span class="emoji">🏆</span><div class="label">Best path</div><div class="value" id="k-best">–</div><div class="sub" id="k-best-sub">–</div></div>
-    <div class="kpi"><span class="emoji">💰</span><div class="label">Cash still needed</div><div class="value num" id="k-need">–</div><div class="sub">after both cars are gone</div></div>
-    <div class="kpi"><span class="emoji">🚗</span><div class="label">The cars cover</div><div class="value num" id="k-cover">–</div><div class="sub" id="k-cover-sub">of the out-the-door cost</div></div>
-    <div class="kpi"><span class="emoji">🎯</span><div class="label">Picking right saves</div><div class="value num" id="k-spread">–</div><div class="sub">best vs. worst path</div></div>
+    <div class="kpi win"><div class="label">Recommended</div><div class="value" id="k-best">–</div><div class="sub" id="k-best-sub">–</div></div>
+    <div class="kpi"><div class="label">Cash still needed</div><div class="value num" id="k-need">–</div><div class="sub">after both cars are sold</div></div>
+    <div class="kpi"><div class="label">Covered by our cars</div><div class="value num" id="k-cover">–</div><div class="sub" id="k-cover-sub">of the out-the-door cost</div></div>
+    <div class="kpi"><div class="label">Value of choosing well</div><div class="value num" id="k-spread">–</div><div class="sub">best vs. least favorable path</div></div>
   </div>
 
-  <!-- GAUGE -->
-  <section class="gauge">
-    <div class="gauge-head">
-      <h3>🛣️ The road to the Raptor</h3>
+  <section class="progress">
+    <div class="progress-head">
+      <h3>How far our cars take us</h3>
       <p id="g-text">–</p>
     </div>
-    <div class="road" role="img" id="road" aria-label="Progress toward the Raptor">
-      <div class="paid" id="g-paid"></div>
-      <div class="truck" id="g-truck">🛻</div>
-      <div class="flag">🏁</div>
-    </div>
-    <div class="road-labels"><span>$0</span><span id="g-cars">Covered by our cars</span><span>Out the door: <b id="g-otd">–</b></span></div>
+    <div class="bar-outer" role="img" id="gauge"><div class="bar-inner" id="g-fill"></div><div class="bar-dot" id="g-dot"></div></div>
+    <div class="bar-labels"><span id="g-cars">–</span><span>Out the door: <b id="g-otd">–</b></span></div>
   </section>
 
   <!-- GARAGE -->
-  <h2><span class="e">🚘</span> Meet the lineup</h2>
-  <p class="section-sub">Drag the sliders or type a number. Put in real offers once we have them, and everything updates.</p>
+  <div class="rule">The vehicles</div>
+  <h2>What we have, and what we'd get</h2>
+  <p class="section-sub">Adjust any figure with the slider or by typing. Once real offers come in, enter them here and everything updates.</p>
   <div class="garage">
 
-    <article class="car tacoma">
+    <article class="car">
       <div class="pic">
         <img src="photos/tacoma.jpg" alt="Our 2017 Tacoma TRD Off-Road in Blazing Blue">
-        <span class="stamp sell">FOR SALE 💸</span>
-        <div class="title"><h3>2017 Tacoma TRD Off-Road</h3><div class="meta">Blazing Blue Pearl · 64k mi · Very good</div></div>
+        <span class="status">Selling</span>
       </div>
       <div class="body">
-        <div class="chips">
-          <span class="chip">⬆️ Eibach 2/1 lift</span><span class="chip">🛞 Method 17" + Wildpeaks</span><span class="chip">⚡ KDMax tune</span><span class="chip">📱 CarPlay</span><span class="chip">🛡️ Undercoated frame</span><span class="chip">✅ All fluids done</span>
-        </div>
+        <h3>2017 Toyota Tacoma TRD Off-Road</h3>
+        <div class="meta">Blazing Blue Pearl · 64,000 miles</div>
+        <ul class="notes">
+          <li>Paint corrected, detailed</li><li>Undercoated, clean frame</li>
+          <li>All fluids serviced</li><li>New brakes and plugs</li>
+          <li>Eibach lift, Method wheels</li><li>CarPlay head unit</li>
+        </ul>
+        <div class="divider"></div>
         <div class="field">
           <label>Private sale price <b class="num" id="tp-l"></b></label>
           <input type="range" id="tp-r" min="22000" max="31000" step="250" aria-label="Tacoma private sale price">
@@ -267,20 +237,24 @@
       </div>
     </article>
 
-    <article class="car gti">
+    <article class="car">
       <div class="pic">
         <img src="photos/gti.jpg" alt="Our 2023 GTI 40th Anniversary in Oryx White">
-        <span class="stamp sell">FOR SALE 💸</span>
-        <div class="title"><h3>2023 GTI 40th Anniversary</h3><div class="meta">Oryx White · 24k mi · 6-speed manual</div></div>
+        <span class="status">Selling</span>
       </div>
       <div class="body">
-        <div class="chips">
-          <span class="chip">✨ Pristine</span><span class="chip">🛡️ Front PPF</span><span class="chip">📹 FitcamX</span><span class="chip">🔊 Forza + Diamond sub</span><span class="chip">🛞 18" Belvederes</span><span class="chip">🔋 New battery</span>
-        </div>
+        <h3>2023 VW GTI 40th Anniversary</h3>
+        <div class="meta">Oryx White · 24,000 miles · Manual</div>
+        <ul class="notes">
+          <li>VW CPO warranty to 2029</li><li>Warranty transfers free</li>
+          <li>Front paint protection film</li><li>Pristine condition</li>
+          <li>Upgraded audio</li><li>New battery</li>
+        </ul>
+        <div class="divider"></div>
         <div class="field">
           <label>Private sale price <b class="num" id="gp-l"></b></label>
           <input type="range" id="gp-r" min="21000" max="29000" step="250" aria-label="GTI private sale price">
-          <div class="money"><span>$</span><input id="gp" inputmode="numeric" value="25000" aria-label="GTI private sale price"></div>
+          <div class="money"><span>$</span><input id="gp" inputmode="numeric" value="26000" aria-label="GTI private sale price"></div>
         </div>
         <div class="field">
           <label>Dealer trade-in offer <b class="num" id="gt-l"></b></label>
@@ -291,16 +265,19 @@
       </div>
     </article>
 
-    <article class="car raptor">
+    <article class="car">
       <div class="pic">
         <img src="photos/raptor.jpg" alt="Ford Ranger Raptor in blue">
-        <span class="stamp buy">INCOMING 🔥</span>
-        <div class="title"><h3>2025/26 Ranger Raptor</h3><div class="meta">New or low miles · 3.0L twin-turbo V6 · Fox shocks</div></div>
+        <span class="status buy">Buying</span>
       </div>
       <div class="body">
-        <div class="chips">
-          <span class="chip">🔧 One car to maintain</span><span class="chip">📄 One insurance policy</span><span class="chip">🏛️ One CT car tax bill</span><span class="chip">🛡️ Factory warranty</span>
-        </div>
+        <h3>2025/26 Ford Ranger Raptor</h3>
+        <div class="meta">New or low miles · Factory warranty</div>
+        <ul class="notes">
+          <li>One vehicle to maintain</li><li>One insurance policy</li>
+          <li>One CT car tax bill</li><li>Automatic for the commute</li>
+        </ul>
+        <div class="divider"></div>
         <div class="field">
           <label>Purchase price <b class="num" id="rp-l"></b></label>
           <input type="range" id="rp-r" min="48000" max="64000" step="250" aria-label="Raptor purchase price">
@@ -316,13 +293,14 @@
   </div>
 
   <!-- SCENARIOS -->
-  <h2><span class="e">🛤️</span> Pick your path</h2>
-  <p class="section-sub">Four ways to turn two cars into a Raptor. <strong>Shortest bar wins</strong>, because it means less cash out of pocket. Hover or tap a bar for the breakdown.</p>
+  <div class="rule">The options</div>
+  <h2>Four ways to make the switch</h2>
+  <p class="section-sub">The cash still needed for the Raptor under each approach. A shorter bar means less out of pocket. Hover or tap a bar for the details.</p>
   <div class="panel">
     <div class="bars" id="bars" role="img" aria-label="Bar chart of cash still needed for each scenario"></div>
     <div class="table-wrap">
       <table id="tbl">
-        <thead><tr><th>Scenario</th><th>Trade credit</th><th>CT sales tax</th><th>Private sale cash</th><th>Cash still needed</th></tr></thead>
+        <thead><tr><th>Approach</th><th>Trade credit</th><th>CT sales tax</th><th>Private sale proceeds</th><th>Cash still needed</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -330,36 +308,34 @@
 
   <div class="grid2">
     <div class="panel">
-      <h3>🧮 Winning path, line by line</h3>
+      <h3>The recommended path, in detail</h3>
       <ul class="list" id="breakdown"></ul>
     </div>
     <div class="panel">
-      <h3>🙌 Why one truck beats two cars</h3>
+      <h3>Why one vehicle instead of two</h3>
       <div class="why">
-        <div class="item"><span class="ic">🔧</span><span><strong>Half the upkeep.</strong> One set of oil changes, tires, brakes and inspections instead of two.</span></div>
-        <div class="item"><span class="ic">🧾</span><span><strong>One insurance bill and one CT car tax bill.</strong> Connecticut towns tax every registered car every year.</span></div>
-        <div class="item"><span class="ic">🛡️</span><span><strong>Newer and under warranty.</strong> A 2017 at 64k miles becomes a 2025/26 under Ford's factory coverage.</span></div>
-        <div class="item"><span class="ic">💵</span><span><strong>The cars pay for most of it.</strong> <span id="why-cover">–</span> of the out-the-door price comes from cars we already own.</span></div>
+        <div class="item"><span class="n">i.</span><span><strong>Less upkeep.</strong> One schedule of oil changes, tires, brakes and inspections instead of two.</span></div>
+        <div class="item"><span class="n">ii.</span><span><strong>Fewer bills.</strong> One insurance policy and one Connecticut car tax bill each year.</span></div>
+        <div class="item"><span class="n">iii.</span><span><strong>Newer and under warranty.</strong> A 2017 with 64,000 miles is replaced by a 2025/26 with factory coverage.</span></div>
+        <div class="item"><span class="n">iv.</span><span><strong>Mostly funded already.</strong> <span id="why-cover">–</span> of the out-the-door price comes from the two cars we own.</span></div>
         <div class="field" style="margin-top:4px">
-          <label>Yearly savings from one fewer car (insurance + car tax + upkeep), optional</label>
+          <label>Yearly savings from one fewer car (insurance, car tax, upkeep), optional</label>
           <div class="money"><span>$</span><input id="save" inputmode="numeric" value="" placeholder="e.g. 2,000" aria-label="Yearly savings from one fewer car"></div>
-          <div id="payback" style="font-size:14px;color:var(--text)"></div>
+          <div id="payback" style="font-size:14px;color:var(--ink)"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="cta"><button id="celebrate" type="button">🎉 Make it happen</button></div>
-
   <details>
-    <summary>🤓 How the math works</summary>
-    <p><strong>CT sales tax.</strong> Vehicles priced over $50,000 are taxed at 7.75% on the whole price, not just the part over $50k. The $50k test uses the price <em>before</em> any trade-in. Trade-ins at the selling dealer lower the taxable amount, so each $1 of trade-in saves 7.75¢ in tax.</p>
-    <p><strong>Break-even.</strong> Trading in a car beats selling it privately once the trade offer is at least the private price ÷ 1.0775 (about 93% of the private price).</p>
+    <summary>How the figures are calculated</summary>
+    <p><strong>Connecticut sales tax.</strong> Vehicles priced over $50,000 are taxed at 7.75% on the whole price, not just the part over $50k. The $50,000 test uses the price before any trade-in. A trade-in at the selling dealer lowers the taxable amount, so each $1 of trade-in saves 7.75¢ in tax.</p>
+    <p><strong>Break-even.</strong> Trading a car in beats selling it privately once the trade offer is at least the private price ÷ 1.0775, or about 93% of it.</p>
     <p><strong>Not included.</strong> Loan payoffs, financing costs, and offers from Carvana or CarMax. An outright sale to them gets no tax credit, so compare it to the private price, not the trade-in.</p>
-    <p><strong>Starting values</strong> come from Nov 2026 market listings and KBB/J.D. Power ranges for similar vehicles. They're estimates, not appraisals.</p>
+    <p><strong>Starting values</strong> come from November 2026 listings and KBB/J.D. Power ranges for comparable vehicles, adjusted for condition. They're estimates, not appraisals.</p>
   </details>
 
-  <footer>Built to compare options. Swap in real offers before deciding. 🛻💨</footer>
+  <footer>Figures are estimates · Replace them with real offers before deciding</footer>
 </div>
 
 <div class="tip" id="tip"></div>
@@ -371,7 +347,6 @@
   const val = id => { const v = parseFloat(String($(id).value).replace(/[^0-9.]/g,'')); return isNaN(v)?0:v; };
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // sliders <-> inputs
   const paint = r => r.style.setProperty('--p', ((r.value-r.min)/(r.max-r.min)*100)+'%');
   ['tp','tt','gp','gt','rp'].forEach(id=>{
     const r=$(id+'-r'), i=$(id);
@@ -382,19 +357,18 @@
   });
   ['doc','dmv','save'].forEach(id=>$(id).addEventListener('input',calc));
 
-  // count-up animation
   const shown = {};
   function countTo(el, target, formatter){
-    const from = shown[el.id] ?? 0; shown[el.id] = target;
+    const from = shown[el.id] ?? target*0.85; shown[el.id] = target;
     if(reduce || from===target){ el.textContent = formatter(target); return; }
-    const t0 = performance.now(), dur = 700;
+    const t0 = performance.now(), dur = 650;
     const step = t => { const k = Math.min((t-t0)/dur,1), e = 1-Math.pow(1-k,3);
       el.textContent = formatter(from + (target-from)*e); if(k<1) requestAnimationFrame(step); };
     requestAnimationFrame(step);
   }
 
   const tip = $('tip');
-  let rowsData = [], lastBest = null;
+  let rowsData = [];
 
   function calc(){
     const tp=val('tp'), tt=val('tt'), gp=val('gp'), gt=val('gt');
@@ -403,10 +377,10 @@
     ['tp','tt','gp','gt','rp'].forEach(id=>$(id+'-l').textContent = fmt(val(id)));
 
     const scen = [
-      {name:'Sell both privately', sub:'Max cash, most hassle', trade:0, priv:tp+gp},
-      {name:'Trade in both', sub:'Easiest, one stop', trade:tt+gt, priv:0},
-      {name:'Trade Tacoma, sell GTI', sub:'Keep a ride until the swap', trade:tt, priv:gp},
-      {name:'Trade GTI, sell Tacoma', sub:'Sell the truck on FB', trade:gt, priv:tp},
+      {name:'Sell both privately', sub:'Most proceeds, more effort', trade:0, priv:tp+gp},
+      {name:'Trade in both', sub:'Simplest, one transaction', trade:tt+gt, priv:0},
+      {name:'Trade Tacoma, sell GTI', sub:'Keeps a car until the swap', trade:tt, priv:gp},
+      {name:'Trade GTI, sell Tacoma', sub:'Sell the truck privately', trade:gt, priv:tp},
     ].map(s=>{
       s.taxable = Math.max(price - s.trade, 0);
       s.tax = s.taxable * rate;
@@ -418,79 +392,69 @@
     const best = scen.reduce((a,b)=> b.need<a.need?b:a);
     const worst = scen.reduce((a,b)=> b.need>a.need?b:a);
     const cover = Math.max(0, Math.min(1, (best.otd - best.need)/best.otd));
+    const pct = Math.round(cover*100);
 
-    // KPIs
     $('k-best').textContent = best.name;
-    $('k-best-sub').textContent = `${fmt(worst.need-best.need)} better than "${worst.name.toLowerCase()}"`;
+    $('k-best-sub').textContent = `${fmt(worst.need-best.need)} ahead of "${worst.name.toLowerCase()}"`;
     countTo($('k-need'), best.need, fmt);
     countTo($('k-cover'), cover*100, v=>Math.round(v)+'%');
     $('k-cover-sub').textContent = `of the ${fmt(best.otd)} out-the-door cost`;
     countTo($('k-spread'), worst.need-best.need, fmt);
-    $('why-cover').textContent = Math.round(cover*100)+'%';
+    $('why-cover').textContent = pct+'%';
 
-    // road gauge
-    $('g-paid').style.width = (cover*100)+'%';
-    $('g-truck').style.left = Math.max(cover*100, 8)+'%';
-    $('g-text').innerHTML = `Our cars get us <b>${Math.round(cover*100)}%</b> of the way. Only <b style="color:var(--gold)">${fmt(best.need)}</b> to go 🏁`;
-    $('g-cars').innerHTML = `Our cars: <b>${fmt(best.otd-best.need)}</b>`;
+    $('g-fill').style.width = (cover*100)+'%';
+    $('g-dot').style.left = (cover*100)+'%';
+    $('g-text').innerHTML = `Our two cars cover <b style="color:var(--ink)">${pct}%</b>, leaving <b style="color:var(--sage)">${fmt(best.need)}</b>`;
+    $('g-cars').innerHTML = `From our cars: <b>${fmt(best.otd-best.need)}</b>`;
     $('g-otd').textContent = fmt(best.otd);
-    $('road').setAttribute('aria-label', `Cars cover ${Math.round(cover*100)}% of ${fmt(best.otd)}; ${fmt(best.need)} still needed`);
+    $('gauge').setAttribute('aria-label', `Our cars cover ${pct}% of ${fmt(best.otd)}; ${fmt(best.need)} still needed`);
 
-    // per-vehicle verdicts
     const verdict = (priv, trade) => {
       const be = priv / (1+rate);
       const edge = priv - trade*(1+rate);
       return edge > 0
-        ? `<span class="call sell">SELL IT 💰</span>Privately nets <strong>${fmt(edge)}</strong> more, even after the trade-in tax credit. Trading wins at <strong>${fmt(be)}+</strong>.`
-        : `<span class="call trade">TRADE IT 🤝</span>With the tax credit, the trade is worth <strong>${fmt(-edge)}</strong> more, and you skip the hassle.`;
+        ? `<span class="call sell">Sell privately</span>Nets <strong>${fmt(edge)}</strong> more than trading in, even after the trade-in tax credit. Trading wins at an offer of <strong>${fmt(be)}</strong> or more.`
+        : `<span class="call trade">Trade in</span>With the tax credit, the trade-in is worth <strong>${fmt(-edge)}</strong> more, and it's less effort.`;
     };
     $('tv').innerHTML = verdict(tp, tt);
     $('gv').innerHTML = verdict(gp, gt);
-    $('rv').innerHTML = `CT tax: <strong>${(rate*100).toFixed(2)}%</strong> ${price>50000?'on the whole price (over $50k)':'(price is $50k or less)'}. Out the door with no trade: <strong>${fmt(price+price*rate+fees)}</strong>.`;
+    $('rv').innerHTML = `<span class="call" style="color:var(--navy)">CT sales tax ${(rate*100).toFixed(2)}%</span>${price>50000?'Applies to the whole price, since it is over $50,000.':'The price is $50,000 or less.'} Out the door with no trade-in: <strong>${fmt(price+price*rate+fees)}</strong>.`;
 
-    // bars
     const max = Math.max(...scen.map(s=>s.need), 1);
     $('bars').innerHTML = scen.map((s,i)=>{
       const w = Math.max(s.need,0)/max*78;
       const isBest = s===best;
       return `<div class="bar-row${isBest?' best':''}" data-i="${i}" tabindex="0">
-        <div class="bar-name">${s.name}${isBest?'<span class="badge">🏆 Winner</span>':''}<small>${s.sub}</small></div>
+        <div class="bar-name">${s.name}${isBest?'<span class="badge">Best</span>':''}<small>${s.sub}</small></div>
         <div class="track"><div class="fill" style="width:${w}%"></div>
           <div class="bar-val num" style="left:${w}%">${fmt(s.need)}</div></div>
       </div>`;
     }).join('');
 
-    // table
     $('tbl').querySelector('tbody').innerHTML = scen.map(s=>`<tr class="${s===best?'best':''}">
-      <td>${s===best?'🏆 ':''}${s.name}</td><td>${s.trade?fmt(s.trade):'—'}</td><td>${fmt(s.tax)}</td><td>${s.priv?fmt(s.priv):'—'}</td><td class="strong">${fmt(s.need)}</td></tr>`).join('');
+      <td>${s.name}</td><td>${s.trade?fmt(s.trade):'—'}</td><td>${fmt(s.tax)}</td><td>${s.priv?fmt(s.priv):'—'}</td><td class="strong">${fmt(s.need)}</td></tr>`).join('');
 
-    // breakdown
     $('breakdown').innerHTML = `
-      <li><span>🛻 Raptor price</span><b>${fmt(price)}</b></li>
-      <li><span>🤝 Trade-in credit</span><b>${best.trade?'−'+fmt(best.trade):'$0'}</b></li>
-      <li><span>🏛️ CT sales tax (${(rate*100).toFixed(2)}% × ${fmt(best.taxable)})</span><b>${fmt(best.tax)}</b></li>
-      <li><span>📄 Doc fee + DMV</span><b>${fmt(fees)}</b></li>
-      <li><span>💸 Cash from private sale(s)</span><b>${best.priv?'−'+fmt(best.priv):'$0'}</b></li>
-      <li class="total"><span><strong>Cash still needed</strong></span><b style="color:var(--good)">${fmt(best.need)}</b></li>`;
+      <li><span>Raptor price</span><b>${fmt(price)}</b></li>
+      <li><span>Trade-in credit</span><b>${best.trade?'−'+fmt(best.trade):'$0'}</b></li>
+      <li><span>CT sales tax (${(rate*100).toFixed(2)}% × ${fmt(best.taxable)})</span><b>${fmt(best.tax)}</b></li>
+      <li><span>Dealer doc fee and DMV</span><b>${fmt(fees)}</b></li>
+      <li><span>Private sale proceeds</span><b>${best.priv?'−'+fmt(best.priv):'$0'}</b></li>
+      <li class="total"><span><strong>Cash still needed</strong></span><b>${fmt(best.need)}</b></li>`;
 
-    // payback
     const save = val('save');
     $('payback').innerHTML = save>0
-      ? `⏱️ At ${fmt(save)}/yr, running one vehicle instead of two pays back the ${fmt(best.need)} in about <strong>${(best.need/save).toFixed(1)} years</strong>.`
+      ? `At ${fmt(save)} a year, owning one vehicle instead of two recovers the ${fmt(best.need)} in about <strong>${(best.need/save).toFixed(1)} years</strong>.`
       : '';
-
-    if(lastBest && lastBest !== best.name) confetti(60);
-    lastBest = best.name;
   }
 
-  // tooltip (hover + tap)
   function showTip(row, x, y){
     const s = rowsData[+row.dataset.i];
     tip.innerHTML = `<div class="t">${s.name}</div>
-      <div class="r"><span>Out-the-door</span><b>${fmt(s.otd)}</b></div>
+      <div class="r"><span>Out-the-door cost</span><b>${fmt(s.otd)}</b></div>
       <div class="r"><span>Trade credit</span><b>${s.trade?'−'+fmt(s.trade):'$0'}</b></div>
-      <div class="r"><span>Private sale cash</span><b>${s.priv?'−'+fmt(s.priv):'$0'}</b></div>
-      <div class="r"><span>CT tax</span><b>${fmt(s.tax)}</b></div>
+      <div class="r"><span>Private sale proceeds</span><b>${s.priv?'−'+fmt(s.priv):'$0'}</b></div>
+      <div class="r"><span>CT sales tax</span><b>${fmt(s.tax)}</b></div>
       <div class="r" style="margin-top:4px"><span>Cash still needed</span><b>${fmt(s.need)}</b></div>`;
     tip.style.left = Math.min(x+14, window.innerWidth-250)+'px';
     tip.style.top = (y+14)+'px'; tip.style.opacity=1;
@@ -500,29 +464,7 @@
   $('bars').addEventListener('mouseleave', ()=> tip.style.opacity=0);
   document.addEventListener('scroll', ()=> tip.style.opacity=0, {passive:true});
 
-  // confetti
-  const cv = $('confetti'), cx = cv.getContext('2d');
-  let parts = [], running = false;
-  const colors = ['#ff6a1f','#ffc23d','#3d8bff','#2fd17f','#ffffff'];
-  function resize(){ cv.width = innerWidth*devicePixelRatio; cv.height = innerHeight*devicePixelRatio; cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
-  addEventListener('resize', resize); resize();
-  function confetti(n){
-    if(reduce) return;
-    for(let i=0;i<n;i++) parts.push({x:innerWidth/2+(Math.random()-.5)*200, y:innerHeight*0.35, vx:(Math.random()-.5)*14, vy:-Math.random()*14-4,
-      r:Math.random()*6+4, c:colors[i%colors.length], a:Math.random()*6, va:(Math.random()-.5)*.3, life:0});
-    if(!running){ running=true; requestAnimationFrame(tick); }
-  }
-  function tick(){
-    cx.clearRect(0,0,innerWidth,innerHeight);
-    parts.forEach(p=>{ p.vy+=.35; p.vx*=.99; p.x+=p.vx; p.y+=p.vy; p.a+=p.va; p.life++;
-      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.a); cx.fillStyle=p.c; cx.fillRect(-p.r/2,-p.r/4,p.r,p.r/2); cx.restore(); });
-    parts = parts.filter(p=>p.y<innerHeight+40 && p.life<400);
-    if(parts.length) requestAnimationFrame(tick); else { running=false; cx.clearRect(0,0,innerWidth,innerHeight); }
-  }
-  $('celebrate').addEventListener('click', ()=>{ confetti(180); const b=$('celebrate'); b.textContent='🛻💨 Raptor time!'; setTimeout(()=>b.textContent='🎉 Make it happen',2500); });
-
   calc();
-  setTimeout(()=>confetti(120), 600);
 })();
 </script>
 </body>
