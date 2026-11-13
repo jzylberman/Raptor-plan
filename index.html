@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Cars → One Raptor · The Math</title>
+<meta name="description" content="Sell the Tacoma and GTI, buy a Ranger Raptor: private sale vs trade-in math with Connecticut tax.">
+<style>
+  :root{
+    color-scheme: dark;
+    --bg:#0e0f11; --surface:#16181b; --surface-2:#1d2024; --line:#2a2e33;
+    --text:#f0efec; --text-2:#c3c2b7; --muted:#8d8c84;
+    --blue:#3987e5; --orange:#d95926; --aqua:#199e70; --yellow:#c98500;
+    --good:#2fbf71; --radius:16px;
+    --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.45;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1100px;margin:0 auto;padding:28px 18px 60px}
+  .num{font-variant-numeric:tabular-nums;font-family:var(--font)}
+
+  /* HERO */
+  .hero{position:relative;overflow:hidden;border-radius:22px;padding:34px 28px 30px;
+    background:
+      radial-gradient(900px 300px at 85% -10%, rgba(217,89,38,.35), transparent 60%),
+      radial-gradient(700px 300px at -10% 110%, rgba(57,135,229,.30), transparent 60%),
+      linear-gradient(160deg,#17191d,#0f1012);
+    border:1px solid var(--line)}
+  .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);font-weight:700}
+  h1{font-size:clamp(28px,5vw,48px);line-height:1.05;margin:8px 0 10px;letter-spacing:-.02em}
+  h1 .arrow{color:var(--orange)}
+  .lede{color:var(--text-2);max-width:640px;margin:0}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:24px}
+  .kpi{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .kpi .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .kpi .value{font-size:30px;font-weight:750;letter-spacing:-.02em;margin-top:2px}
+  .kpi .sub{font-size:13px;color:var(--text-2)}
+  .kpi.win{border-color:rgba(47,191,113,.45);background:rgba(47,191,113,.08)}
+  .kpi.win .value{color:var(--good)}
+
+  h2{font-size:22px;margin:40px 0 6px;letter-spacing:-.01em}
+  .section-sub{color:var(--text-2);margin:0 0 16px;font-size:15px}
+
+  /* VEHICLE CARDS */
+  .garage{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+  .car{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+  .car .pic{position:relative;aspect-ratio:16/9;background:linear-gradient(180deg,#22262b,#15171a);display:flex;align-items:center;justify-content:center}
+  .car .pic img{width:100%;height:100%;object-fit:cover;display:block}
+  .car .pic svg{width:88%;height:auto}
+  .tag{position:absolute;top:10px;left:10px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+       padding:4px 9px;border-radius:999px;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.12)}
+  .tag.sell{color:#9fc6ff}.tag.buy{color:#ffb08f}
+  .car .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .car h3{margin:0;font-size:18px}
+  .car .meta{color:var(--muted);font-size:13px;margin-top:-6px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:12px;color:var(--text-2);background:var(--surface-2);border:1px solid var(--line);padding:3px 8px;border-radius:999px}
+
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+  .field label b{color:var(--text);font-weight:650}
+  .money{display:flex;align-items:center;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:0 10px}
+  .money span{color:var(--muted)}
+  .money input{all:unset;flex:1;padding:9px 6px;font-size:16px;font-variant-numeric:tabular-nums;color:var(--text);width:100%}
+  .money:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(57,135,229,.25)}
+  input[type=range]{width:100%;accent-color:var(--orange)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .verdict{margin-top:auto;font-size:13px;padding:10px 12px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);color:var(--text-2)}
+  .verdict strong{color:var(--text)}
+
+  /* CHART */
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .bars{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+  .bar-row{display:grid;grid-template-columns:minmax(150px,230px) 1fr;gap:14px;align-items:center;position:relative}
+  .bar-name{font-size:14px;color:var(--text)}
+  .bar-name small{display:block;color:var(--muted);font-size:12px}
+  .track{position:relative;height:34px;border-left:1px solid var(--line)}
+  .fill{position:absolute;left:0;top:3px;bottom:3px;border-radius:0 4px 4px 0;background:var(--blue);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+  .bar-row.best .fill{background:var(--good)}
+  .bar-val{position:absolute;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;white-space:nowrap;transition:left .45s cubic-bezier(.2,.8,.2,1);padding-left:8px;color:var(--text)}
+  .badge{display:inline-block;margin-left:8px;font-size:11px;font-weight:700;color:#0e0f11;background:var(--good);padding:2px 7px;border-radius:999px;vertical-align:1px}
+  .bar-row:hover .fill{filter:brightness(1.15)}
+  .tip{position:fixed;pointer-events:none;z-index:10;background:#24272c;border:1px solid #3a3f45;border-radius:10px;padding:10px 12px;font-size:13px;min-width:220px;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;transition:opacity .12s}
+  .tip .r{display:flex;justify-content:space-between;gap:16px;color:var(--text-2)}
+  .tip .r b{color:var(--text);font-variant-numeric:tabular-nums}
+  .tip .t{font-weight:700;margin-bottom:6px}
+
+  /* TABLE */
+  .table-wrap{overflow-x:auto;margin-top:18px}
+  table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+  th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
+  th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+  tr.best td{background:rgba(47,191,113,.07)}
+  tr.best td:first-child{box-shadow:inset 3px 0 0 var(--good)}
+  td.strong{font-weight:750}
+
+  /* BREAKDOWN + WHY */
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+  .list{margin:0;padding:0;list-style:none}
+  .list li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px;color:var(--text-2)}
+  .list li b{color:var(--text);font-variant-numeric:tabular-nums}
+  .list li.total{border-bottom:none;padding-top:12px;font-size:16px;color:var(--text)}
+  .why{display:grid;gap:10px}
+  .why div{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--text-2)}
+  .why .ic{flex:none;width:30px;height:30px;border-radius:9px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;font-size:15px}
+  .why strong{color:var(--text)}
+
+  details{margin-top:28px;color:var(--text-2);font-size:14px}
+  summary{cursor:pointer;color:var(--text);font-weight:600}
+  footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px}
+  @media (max-width:560px){
+    .bar-row{grid-template-columns:1fr;gap:4px}
+    .hero{padding:26px 18px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow">The garage plan</div>
+    <h1>Tacoma + GTI <span class="arrow">→</span> Ranger Raptor</h1>
+    <p class="lede">We sell two vehicles, buy one truck, and only maintain, insure and pay car tax on one vehicle. Below are the real numbers, including Connecticut sales tax, DMV fees and the dealer doc fee. Every number is editable.</p>
+    <div class="kpis">
+      <div class="kpi win"><div class="label">Best path</div><div class="value" id="k-best">–</div><div class="sub" id="k-best-sub">–</div></div>
+      <div class="kpi"><div class="label">Cash still needed</div><div class="value num" id="k-need">–</div><div class="sub">after both cars are gone</div></div>
+      <div class="kpi"><div class="label">The two cars cover</div><div class="value num" id="k-cover">–</div><div class="sub" id="k-cover-sub">of the out-the-door cost</div></div>
+      <div class="kpi"><div class="label">Best vs. worst path</div><div class="value num" id="k-spread">–</div><div class="sub">how much the choice is worth</div></div>
+    </div>
+  </section>
+
+  <!-- GARAGE -->
+  <h2>The vehicles</h2>
+  <p class="section-sub">Drag the sliders or type values in. Put in real offers once we have them.</p>
+  <div class="garage">
+
+    <!-- TACOMA -->
+    <article class="car">
+      <div class="pic">
+        <img src="photos/tacoma.jpg" alt="Our 2017 Tacoma TRD Off-Road" onerror="this.remove()">
+        <svg viewBox="0 0 320 150" aria-hidden="true">
+          <ellipse cx="160" cy="132" rx="140" ry="7" fill="#000" opacity=".45"/>
+          <path d="M18 104 V74 H132 V66 L152 36 H216 L242 64 L292 68 Q304 70 304 84 V104 Z" fill="#1d5fc4"/>
+          <path d="M18 74 H132" stroke="#164a99" stroke-width="2"/>
+          <path d="M158 41 H184 V62 H144 Z M190 41 H212 L233 62 H190 Z" fill="#0b1626" opacity=".9"/>
+          <path d="M292 70 h10 v10 h-10z" fill="#ffd27a" opacity=".9"/>
+          <rect x="12" y="98" width="296" height="8" rx="3" fill="#2b2f35"/>
+          <g><circle cx="78" cy="108" r="25" fill="#111"/><circle cx="78" cy="108" r="13" fill="#3a3d42"/><circle cx="78" cy="108" r="4" fill="#777"/></g>
+          <g><circle cx="248" cy="108" r="25" fill="#111"/><circle cx="248" cy="108" r="13" fill="#3a3d42"/><circle cx="248" cy="108" r="4" fill="#777"/></g>
+        </svg>
+        <span class="tag sell">Selling</span>
+      </div>
+      <div class="body">
+        <h3>2017 Tacoma TRD Off-Road</h3>
+        <div class="meta">Blazing Blue Pearl · 64k miles · Very good condition</div>
+        <div class="chips">
+          <span class="chip">Eibach 2/1 lift</span><span class="chip">Method 17" + Wildpeaks</span><span class="chip">KDMax tune</span><span class="chip">Sony CarPlay</span><span class="chip">NH Oil undercoat</span><span class="chip">All fluids done</span>
+        </div>
+        <div class="field">
+          <label>Private sale price <b class="num" id="tp-l"></b></label>
+          <input type="range" id="tp-r" min="22000" max="31000" step="250">
+          <div class="money"><span>$</span><input id="tp" inputmode="numeric" value="26500"></div>
+        </div>
+        <div class="field">
+          <label>Dealer trade-in offer <b class="num" id="tt-l"></b></label>
+          <input type="range" id="tt-r" min="17000" max="28000" step="250">
+          <div class="money"><span>$</span><input id="tt" inputmode="numeric" value="21500"></div>
+        </div>
+        <div class="verdict" id="tv"></div>
+      </div>
+    </article>
+
+    <!-- GTI -->
+    <article class="car">
+      <div class="pic">
+        <img src="photos/gti.jpg" alt="Our 2023 GTI 40th Anniversary Edition" onerror="this.remove()">
+        <svg viewBox="0 0 320 150" aria-hidden="true">
+          <ellipse cx="160" cy="132" rx="140" ry="7" fill="#000" opacity=".45"/>
+          <path d="M22 106 V72 Q24 52 46 46 L84 40 L118 40 L150 36 H200 Q226 38 246 60 L288 68 Q302 72 302 86 V106 Z" fill="#ecebe6"/>
+          <path d="M60 46 L118 44 L118 62 H52 Z M124 44 H196 Q214 46 232 62 H124 Z" fill="#0b1626" opacity=".88"/>
+          <path d="M28 86 H300" stroke="#c8102e" stroke-width="2.5"/>
+          <path d="M290 72 h10 v8 h-10z" fill="#bfe3ff" opacity=".9"/>
+          <rect x="18" y="100" width="286" height="7" rx="3" fill="#2b2f35"/>
+          <g><circle cx="76" cy="108" r="21" fill="#111"/><circle cx="76" cy="108" r="14" fill="#9aa0a6"/><circle cx="76" cy="108" r="4" fill="#333"/></g>
+          <g><circle cx="248" cy="108" r="21" fill="#111"/><circle cx="248" cy="108" r="14" fill="#9aa0a6"/><circle cx="248" cy="108" r="4" fill="#333"/></g>
+        </svg>
+        <span class="tag sell">Selling</span>
+      </div>
+      <div class="body">
+        <h3>2023 GTI 40th Anniversary</h3>
+        <div class="meta">Oryx White · 24k miles · 6-speed manual · Clean title</div>
+        <div class="chips">
+          <span class="chip">Pristine</span><span class="chip">Front PPF</span><span class="chip">FitcamX dash cam</span><span class="chip">Forza amp + speakers</span><span class="chip">18" Belvedere wheels</span><span class="chip">New battery</span>
+        </div>
+        <div class="field">
+          <label>Private sale price <b class="num" id="gp-l"></b></label>
+          <input type="range" id="gp-r" min="21000" max="29000" step="250">
+          <div class="money"><span>$</span><input id="gp" inputmode="numeric" value="25000"></div>
+        </div>
+        <div class="field">
+          <label>Dealer trade-in offer <b class="num" id="gt-l"></b></label>
+          <input type="range" id="gt-r" min="17000" max="27000" step="250">
+          <div class="money"><span>$</span><input id="gt" inputmode="numeric" value="21000"></div>
+        </div>
+        <div class="verdict" id="gv"></div>
+      </div>
+    </article>
+
+    <!-- RAPTOR -->
+    <article class="car">
+      <div class="pic">
+        <img src="photos/raptor.jpg" alt="Ford Ranger Raptor" onerror="this.remove()">
+        <svg viewBox="0 0 320 150" aria-hidden="true">
+          <ellipse cx="160" cy="133" rx="146" ry="7" fill="#000" opacity=".45"/>
+          <path d="M14 100 V70 H130 V62 L150 32 H218 L246 60 L296 64 Q308 66 308 80 V100 Z" fill="#5d6268"/>
+          <path d="M14 70 H130" stroke="#474b50" stroke-width="2"/>
+          <path d="M156 37 H184 V58 H142 Z M190 37 H214 L237 58 H190 Z" fill="#0b1626" opacity=".9"/>
+          <path d="M48 100 Q50 76 78 74 Q106 76 110 100 Z M216 100 Q218 76 248 74 Q278 76 282 100 Z" fill="#2c2f33"/>
+          <path d="M18 88 H128" stroke="#e8611c" stroke-width="3"/>
+          <path d="M296 66 h11 v9 h-11z" fill="#ffd27a" opacity=".95"/>
+          <rect x="10" y="96" width="300" height="9" rx="3" fill="#24272b"/>
+          <g><circle cx="79" cy="108" r="27" fill="#0d0d0d"/><circle cx="79" cy="108" r="14" fill="#2f3237"/><circle cx="79" cy="108" r="4" fill="#e8611c"/></g>
+          <g><circle cx="249" cy="108" r="27" fill="#0d0d0d"/><circle cx="249" cy="108" r="14" fill="#2f3237"/><circle cx="249" cy="108" r="4" fill="#e8611c"/></g>
+        </svg>
+        <span class="tag buy">Buying</span>
+      </div>
+      <div class="body">
+        <h3>2025/26 Ranger Raptor</h3>
+        <div class="meta">New or low miles · 3.0L twin-turbo V6 · Fox shocks</div>
+        <div class="chips">
+          <span class="chip">One vehicle to maintain</span><span class="chip">One insurance policy</span><span class="chip">One CT car tax bill</span>
+        </div>
+        <div class="field">
+          <label>Purchase price <b class="num" id="rp-l"></b></label>
+          <input type="range" id="rp-r" min="48000" max="64000" step="250">
+          <div class="money"><span>$</span><input id="rp" inputmode="numeric" value="57000"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Dealer doc fee</label><div class="money"><span>$</span><input id="doc" inputmode="numeric" value="600"></div></div>
+          <div class="field"><label>DMV reg + title</label><div class="money"><span>$</span><input id="dmv" inputmode="numeric" value="250"></div></div>
+        </div>
+        <div class="verdict" id="rv"></div>
+      </div>
+    </article>
+  </div>
+
+  <!-- CHART -->
+  <h2>Four ways to do it</h2>
+  <p class="section-sub">Cash still needed for the Raptor after selling or trading both cars. <strong>Shorter bar = better.</strong> Hover over a bar for the breakdown.</p>
+  <div class="panel">
+    <div class="bars" id="bars" role="img" aria-label="Bar chart of cash still needed for each scenario"></div>
+    <div class="table-wrap">
+      <table id="tbl">
+        <thead><tr><th>Scenario</th><th>Trade credit</th><th>CT sales tax</th><th>Private sale cash</th><th>Cash still needed</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- BREAKDOWN + WHY -->
+  <div class="grid2" style="margin-top:14px">
+    <div class="panel">
+      <h3 style="margin:0 0 8px;font-size:17px">Best path, line by line</h3>
+      <ul class="list" id="breakdown"></ul>
+    </div>
+    <div class="panel">
+      <h3 style="margin:0 0 12px;font-size:17px">Why one truck beats two cars</h3>
+      <div class="why">
+        <div><span class="ic">🔧</span><span><strong>Half the upkeep.</strong> One set of oil changes, tires, brakes and inspections instead of two.</span></div>
+        <div><span class="ic">🧾</span><span><strong>One insurance policy and one CT car tax bill.</strong> Connecticut towns bill property tax on every registered car every year.</span></div>
+        <div><span class="ic">🛻</span><span><strong>Newer, with warranty.</strong> We trade a 2017 truck at 64k miles for a 2025/26 under Ford's factory coverage.</span></div>
+        <div><span class="ic">💵</span><span><strong>The two cars pay for most of it.</strong> <span id="why-cover">–</span> of the out-the-door price comes from the cars we already own.</span></div>
+        <div class="field" style="display:block;margin-top:4px">
+          <label style="margin-bottom:4px">Yearly savings from one fewer car (insurance + car tax + upkeep), optional</label>
+          <div class="money"><span>$</span><input id="save" inputmode="numeric" value="" placeholder="e.g. 2,000"></div>
+          <div id="payback" style="margin-top:8px;font-size:14px;color:var(--text)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <details>
+    <summary>How the math works</summary>
+    <p><strong>CT sales tax.</strong> Vehicles priced over $50,000 are taxed at 7.75% on the whole price, not just the part over $50k. The $50k test uses the price <em>before</em> any trade-in. Trade-ins at the selling dealer lower the taxable amount, so each $1 of trade-in saves 7.75¢ in tax.</p>
+    <p><strong>Break-even.</strong> Trading in a car beats selling it privately once the trade offer is at least the private price ÷ 1.0775 (about 93% of the private price).</p>
+    <p><strong>Not included.</strong> Loan payoffs, financing costs, and offers from Carvana or CarMax. An outright sale to them gets no tax credit, so compare it to the private price, not the trade-in.</p>
+    <p><strong>Starting values</strong> come from Nov 2026 market listings and KBB/J.D. Power ranges for similar vehicles. They're estimates, not appraisals.</p>
+  </details>
+
+  <footer>Built to compare options; replace the estimates with real offers before deciding.</footer>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const fmt = n => (n<0?'−':'') + '$' + Math.round(Math.abs(n)).toLocaleString('en-US');
+  const val = id => { const v = parseFloat(String($(id).value).replace(/[^0-9.]/g,'')); return isNaN(v)?0:v; };
+
+  // link sliders <-> inputs
+  ['tp','tt','gp','gt','rp'].forEach(id=>{
+    const r=$(id+'-r'), i=$(id);
+    r.value = val(id);
+    r.addEventListener('input',()=>{ i.value = Number(r.value).toLocaleString('en-US'); calc(); });
+    i.addEventListener('input',()=>{ r.value = val(id); calc(); });
+    i.value = val(id).toLocaleString('en-US');
+  });
+  ['doc','dmv','save'].forEach(id=>$(id).addEventListener('input',calc));
+
+  const tip = $('tip');
+  let rowsData = [];
+
+  function calc(){
+    const tp=val('tp'), tt=val('tt'), gp=val('gp'), gt=val('gt');
+    const price=val('rp'), fees=val('doc')+val('dmv');
+    const rate = price > 50000 ? 0.0775 : 0.0635;
+    ['tp','tt','gp','gt','rp'].forEach(id=>$(id+'-l').textContent = fmt(val(id)));
+
+    const scen = [
+      {key:'A', name:'Sell both privately', sub:'Max cash, most hassle', trade:0, priv:tp+gp},
+      {key:'B', name:'Trade in both', sub:'Easiest, one stop', trade:tt+gt, priv:0},
+      {key:'C', name:'Trade Tacoma, sell GTI', sub:'Keep a ride until the swap', trade:tt, priv:gp},
+      {key:'D', name:'Trade GTI, sell Tacoma', sub:'Sell the truck on FB', trade:gt, priv:tp},
+    ].map(s=>{
+      s.taxable = Math.max(price - s.trade, 0);
+      s.tax = s.taxable * rate;
+      s.otd = price + s.tax + fees;
+      s.need = price - s.trade + s.tax + fees - s.priv;
+      return s;
+    });
+    rowsData = scen;
+    const best = scen.reduce((a,b)=> b.need<a.need?b:a);
+    const worst = scen.reduce((a,b)=> b.need>a.need?b:a);
+
+    // KPIs
+    $('k-best').textContent = best.name;
+    $('k-best-sub').textContent = `${fmt(worst.need-best.need)} better than "${worst.name.toLowerCase()}"`;
+    $('k-need').textContent = fmt(best.need);
+    const cover = (best.otd - best.need)/best.otd;
+    $('k-cover').textContent = Math.round(cover*100)+'%';
+    $('k-cover-sub').textContent = `of the ${fmt(best.otd)} out-the-door cost`;
+    $('k-spread').textContent = fmt(worst.need-best.need);
+    $('why-cover').textContent = Math.round(cover*100)+'%';
+
+    // per-vehicle verdicts
+    const verdict = (priv, trade) => {
+      const be = priv / (1+rate);
+      const edge = priv - trade*(1+rate);
+      return edge > 0
+        ? `<strong>Sell privately</strong>, which nets ${fmt(edge)} more after the trade-in tax credit. Trading wins at ${fmt(be)}+.`
+        : `<strong>Trade it in</strong>. With the tax credit the trade is worth ${fmt(-edge)} more, and you skip the hassle.`;
+    };
+    $('tv').innerHTML = verdict(tp, tt);
+    $('gv').innerHTML = verdict(gp, gt);
+    $('rv').innerHTML = `CT tax rate: <strong>${(rate*100).toFixed(2)}%</strong> ${price>50000?'on the whole price (over $50k)':'(price is $50k or less)'}. Out the door with no trade: <strong>${fmt(price+price*rate+fees)}</strong>.`;
+
+    // bars
+    const max = Math.max(...scen.map(s=>s.need), 1);
+    $('bars').innerHTML = scen.map((s,i)=>{
+      const w = Math.max(s.need,0)/max*78;
+      const isBest = s===best;
+      return `<div class="bar-row${isBest?' best':''}" data-i="${i}">
+        <div class="bar-name">${s.name}${isBest?'<span class="badge">Lowest</span>':''}<small>${s.sub}</small></div>
+        <div class="track"><div class="fill" style="width:${w}%"></div>
+          <div class="bar-val num" style="left:${w}%">${fmt(s.need)}</div></div>
+      </div>`;
+    }).join('');
+
+    // table
+    $('tbl').querySelector('tbody').innerHTML = scen.map(s=>`<tr class="${s===best?'best':''}">
+      <td>${s.name}</td><td>${s.trade?fmt(s.trade):'—'}</td><td>${fmt(s.tax)}</td><td>${s.priv?fmt(s.priv):'—'}</td><td class="strong">${fmt(s.need)}</td></tr>`).join('');
+
+    // breakdown
+    $('breakdown').innerHTML = `
+      <li><span>Raptor price</span><b>${fmt(price)}</b></li>
+      <li><span>Trade-in credit</span><b>${best.trade?'−'+fmt(best.trade):'$0'}</b></li>
+      <li><span>CT sales tax (${(rate*100).toFixed(2)}% × ${fmt(best.taxable)})</span><b>${fmt(best.tax)}</b></li>
+      <li><span>Doc fee + DMV</span><b>${fmt(fees)}</b></li>
+      <li><span>Cash from private sale(s)</span><b>${best.priv?'−'+fmt(best.priv):'$0'}</b></li>
+      <li class="total"><span><strong>Cash still needed</strong></span><b style="color:var(--good)">${fmt(best.need)}</b></li>`;
+
+    // payback
+    const save = val('save');
+    $('payback').innerHTML = save>0
+      ? `At ${fmt(save)}/yr, running one vehicle instead of two pays back the ${fmt(best.need)} in about <strong>${(best.need/save).toFixed(1)} years</strong>.`
+      : '';
+  }
+
+  // tooltip
+  $('bars').addEventListener('mousemove', e=>{
+    const row = e.target.closest('.bar-row'); if(!row){tip.style.opacity=0;return;}
+    const s = rowsData[+row.dataset.i];
+    tip.innerHTML = `<div class="t">${s.name}</div>
+      <div class="r"><span>Out-the-door</span><b>${fmt(s.otd)}</b></div>
+      <div class="r"><span>Trade credit</span><b>${s.trade?'−'+fmt(s.trade):'$0'}</b></div>
+      <div class="r"><span>Private sale cash</span><b>${s.priv?'−'+fmt(s.priv):'$0'}</b></div>
+      <div class="r"><span>CT tax</span><b>${fmt(s.tax)}</b></div>
+      <div class="r" style="margin-top:4px"><span>Cash still needed</span><b>${fmt(s.need)}</b></div>`;
+    const x = Math.min(e.clientX+14, window.innerWidth-250);
+    tip.style.left = x+'px'; tip.style.top = (e.clientY+14)+'px'; tip.style.opacity=1;
+  });
+  $('bars').addEventListener('mouseleave', ()=> tip.style.opacity=0);
+
+  calc();
+})();
+</script>
+</body>
+</html>
